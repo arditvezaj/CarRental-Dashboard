@@ -27,14 +27,14 @@ interface TypeProps {
 
 interface Props {
   formAddUser: UseFormReturn<z.infer<typeof FormSchemaUser>>;
-  handlePhotoChange: (
-    field: string
-  ) => (event: React.ChangeEvent<HTMLInputElement>) => void;
+  // handlePhotoChange: (
+  //   field: string
+  // ) => (event: React.ChangeEvent<HTMLInputElement>) => void;
   errorMessage: string;
 }
 const AddUserForm = ({
   formAddUser,
-  handlePhotoChange,
+  // handlePhotoChange,
   errorMessage,
 }: Props) => {
   return (
@@ -138,14 +138,14 @@ const AddUserForm = ({
           </FormItem>
         )}
       />
-      <div>
+      {/* <div>
         <Label>Profile Photo</Label>
         <Input type="file" onChange={handlePhotoChange("profilePhoto")} />
       </div>
       <div>
         <Label>ID</Label>
         <Input type="file" onChange={handlePhotoChange("cardFront")} />
-      </div>
+      </div> */}
     </Form>
   );
 };

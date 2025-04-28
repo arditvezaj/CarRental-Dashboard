@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 // import { cloudinaryUpload } from "@/utils/cloudinaryService";
 
-// import { useCreateUserMutation } from "@/redux/services/workers/api";
+import { useCreateUserMutation } from "@/redux/services/users/api";
 
 import FormSchemaNewUser from "./FormSchemaUser";
 import AddUserForm from "./AddUserForm";
@@ -35,20 +35,8 @@ const UserAddModalForm = ({ open, setShowUserAddForm }: UserAddFormProps) => {
       password: "",
       birthDate: undefined,
       phoneNumber: "",
-      place: "",
-      street: "",
-      ahv: "",
       role: "",
-      residenceDate: undefined,
-      residenceType: "",
-      workerType: "",
-      salaryType: "",
-      notes: "",
-      profilePhoto: "",
-      cardFront: "",
-      cardBack: "",
-      signature: "",
-      ahvCard: "",
+      // profilePhoto: "",
     },
   });
 
@@ -58,7 +46,7 @@ const UserAddModalForm = ({ open, setShowUserAddForm }: UserAddFormProps) => {
   } = formAddUser;
 
   const [errorMessage, setErrorMessage] = useState("");
-  // const [addUser, { isLoading: isAddingUser }] = useCreateUserMutation();
+  const [addUser, { isLoading: isAddingUser }] = useCreateUserMutation();
 
   const closeUserAddForm = () => {
     setShowUserAddForm(false);
@@ -66,48 +54,45 @@ const UserAddModalForm = ({ open, setShowUserAddForm }: UserAddFormProps) => {
     setErrorMessage("");
   };
 
-  const [photos, setPhotos] = useState<{ [key: string]: string | null }>({
-    profilePhoto: null,
-    cardFront: null,
-    cardBack: null,
-    signature: null,
-    ahvCard: null,
-  });
+  // const [photos, setPhotos] = useState<{ [key: string]: string | null }>({
+  //   profilePhoto: null,
+  //   cardFront: null,
+  //   cardBack: null,
+  //   signature: null,
+  //   ahvCard: null,
+  // });
 
-  const handlePhotoChange =
-    (key: string) => async (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
-        const file = e.target.files[0];
+  // const handlePhotoChange =
+  //   (key: string) => async (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     if (e.target.files) {
+  //       const file = e.target.files[0];
 
-        // const url = await cloudinaryUpload(file, "mitarbeiter");
-        const url = "url";
-        setPhotos({
-          ...photos,
-          [key]: url,
-        });
-      }
-    };
+  //       // const url = await cloudinaryUpload(file, "mitarbeiter");
+  //       const url = "url";
+  //       setPhotos({
+  //         ...photos,
+  //         [key]: url,
+  //       });
+  //     }
+  //   };
 
   const onSubmitNewUser = async (values: z.infer<typeof FormSchemaNewUser>) => {
     try {
-      const { birthDate, residenceDate } = values;
+      const { birthDate } = values;
 
       birthDate?.setHours(12, 0, 0, 0);
-      residenceDate?.setHours(12, 0, 0, 0);
 
       const formattedBirthDate = formatISO(birthDate);
-      const formattedResidenceDate = formatISO(residenceDate);
 
       const data = formData({
         values,
-        photos,
+        // photos,
       });
 
-      // await addUser({
-      //   birthDate: formattedBirthDate,
-      //   residenceDate: formattedResidenceDate,
-      //   ...data,
-      // }).unwrap();
+      await addUser({
+        birthDate: formattedBirthDate,
+        ...data,
+      }).unwrap();
 
       closeUserAddForm();
     } catch (error: any) {
@@ -146,7 +131,7 @@ const UserAddModalForm = ({ open, setShowUserAddForm }: UserAddFormProps) => {
           <div className="py-4 grid grid-cols-2 gap-6">
             <AddUserForm
               formAddUser={formAddUser}
-              handlePhotoChange={handlePhotoChange}
+              // handlePhotoChange={handlePhotoChange}
               errorMessage={errorMessage}
             />
           </div>
@@ -155,8 +140,7 @@ const UserAddModalForm = ({ open, setShowUserAddForm }: UserAddFormProps) => {
               type="submit"
               // disabled={isAddingUser || !requiredFields()}
             >
-              {/* {isAddingUser ? <Spinner inButton /> : <span>Add</span>} */}
-              <span>Add</span>
+              {isAddingUser ? <Spinner inButton /> : <span>Add</span>}
             </Button>
             <Button
               type="button"

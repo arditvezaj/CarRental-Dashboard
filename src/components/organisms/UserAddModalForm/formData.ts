@@ -3,10 +3,10 @@ import FormSchemaNewWorker from "./FormSchemaUser";
 
 export const formData = ({
   values,
-  photos,
+  // photos,
 }: {
   values: z.infer<typeof FormSchemaNewWorker>;
-  photos: { [key: string]: string | null };
+  // photos: { [key: string]: string | null };
 }) => {
   const {
     name,
@@ -14,16 +14,7 @@ export const formData = ({
     password,
     birthDate,
     phoneNumber,
-    place,
-    street,
-    state,
-    ahv,
     role,
-    residenceDate,
-    residenceType,
-    workerType,
-    salaryType,
-    notes,
   } = values;
 
   const dataObject: Record<string, string | null | undefined> = {
@@ -32,23 +23,14 @@ export const formData = ({
     password,
     birthDate: birthDate?.toISOString(),
     phoneNumber,
-    place,
-    street,
-    state,
-    ahv,
     role,
-    residenceDate: residenceDate?.toISOString(),
-    residenceType,
-    workerType,
-    salaryType,
-    notes,
   };
 
-  Object.keys(photos).forEach((key) => {
-    if (photos[key]) {
-      dataObject[key] = photos[key];
-    }
-  });
+  // Object.keys(photos).forEach((key) => {
+  //   if (photos[key]) {
+  //     dataObject[key] = photos[key];
+  //   }
+  // });
 
   return dataObject;
 };
